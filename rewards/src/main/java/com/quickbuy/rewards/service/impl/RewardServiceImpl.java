@@ -6,6 +6,7 @@ import com.quickbuy.rewards.repository.TransactionRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import java.time.LocalDate;
 
 import com.quickbuy.rewards.service.RewardService;
 
@@ -28,6 +29,9 @@ public class RewardServiceImpl implements RewardService {
     @Value("${rewards.tier2.points}")
     private int tier2Points;
 
+    @Value("${rewards.numberOfMonths}")
+    private int numberOfMonths;
+
     private final TransactionRepository transactionRepository;
 
     public RewardServiceImpl(TransactionRepository transactionRepository) {
@@ -39,7 +43,9 @@ public class RewardServiceImpl implements RewardService {
         log.info("Starting calculation of customer rewards.");
         List<Transaction> transactions;
         try {
-            transactions = transactionRepository.findAllByOrderByCustomerIdAscTransactionDateAsc();
+
+            LocalDate threeMonthsAgo = LocalDate.now().minusMonths(numberOfMonths);
+            transactions = transactionRepository.findByTransactionDateAfterOrderByCustomerIdAscTransactionDateAsc(threeMonthsAgo);
         } catch (Exception e) {
             log.error("Database error occurred while fetching transactions: {}", e.getMessage());
             throw new RuntimeException("Failed to retrieve transactions from database", e);
@@ -55,7 +61,8 @@ public class RewardServiceImpl implements RewardService {
 
         for (Transaction t : transactions) {
             String customerId = t.getCustomerId();
-            String month = t.getTransactionDate().getMonth().toString();
+            String month = t.getTransactionDate().getYear() + "-" + t.getTransactionDate().getMonth().toString();
+
             int points = calculatePoints(t.getAmount());
 
             rewardTracker
