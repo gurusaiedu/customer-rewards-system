@@ -33,9 +33,9 @@ rewards.tier2.points=2
 
 # Number of months to calculate rewards (e.g., last 3 months)
 rewards.numberOfMonths=3
+---
+### Project Structure
 
-## Project Structure
-```
 src/main/java
 └── com.quickbuy.rewards
     ├── controller
@@ -51,7 +51,7 @@ src/main/java
         └── RewardServiceImpl.java
 
 
-
+---
 ### Package Descriptions
 
 - **controller** – Handles API requests and endpoints.
@@ -102,6 +102,8 @@ src/main/java
   }
 ]
 
+---
+
 ## How to Run
 
 ### Step 1: Configure `application.properties`
@@ -131,7 +133,7 @@ http://localhost:8080/api/rewards
 
 http://localhost:8080/api/rewards
 
-
+---
 ## Future Enhancements
 
 - Add pagination & sorting for all customers
