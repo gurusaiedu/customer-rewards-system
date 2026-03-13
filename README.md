@@ -22,8 +22,7 @@ The reward rules are **fully configurable via `application.properties`**, making
 
 All thresholds, points, and period are defined in **`application.properties`**:
 
-```properties
-# Tier 1: points start from $50
+```# Tier 1: points start from $50
 rewards.tier1.threshold=50
 rewards.tier1.points=1
 
@@ -33,9 +32,11 @@ rewards.tier2.points=2
 
 # Number of months to calculate rewards (e.g., last 3 months)
 rewards.numberOfMonths=3
+```
 ---
-### Project Structure
 
+### Project Structure
+```
 src/main/java
 └── com.quickbuy.rewards
     ├── controller
@@ -49,7 +50,7 @@ src/main/java
     │   └── RewardService.java
     └── service/impl
         └── RewardServiceImpl.java
-
+```
 
 ---
 ### Package Descriptions
@@ -101,7 +102,7 @@ src/main/java
     "totalRewardPoints": 102
   }
 ]
-
+```
 ---
 
 ## How to Run
@@ -120,27 +121,22 @@ rewards.threshold1=50
 rewards.threshold2=100
 rewards.point1=1
 rewards.point2=2
-
+```
 ### Step 2: Build the Project`
-
+```
 mvn clean install
-
+```
 ### Step 3: Run the Spring Boot Application`
-
-http://localhost:8080/api/rewards
-
+```
+mvn spring-boot:run
+```
 ### Step 4: Access API`
-
+```
 http://localhost:8080/api/rewards
-
+```
 ---
 ## Future Enhancements
 
-- Add pagination & sorting for all customers
-- Caching reward calculations for performance
-- Add export reports to CSV / Excel
-- Add Swagger UI documentation for easy testing
-- Support dynamic tiers from configuration beyond 2 tiers
-- Add alerts/notifications for reward milestones
 - Total reward points for all customers in a specific period
 - Rewards for one customer in a specific period
+- Export reports to CSV / Excel
