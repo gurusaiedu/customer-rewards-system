@@ -12,4 +12,5 @@ import java.util.List;
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 
     List<Transaction> findByTransactionDateAfterOrderByCustomerIdAscTransactionDateAsc(LocalDate date);
+    List<Transaction> findByCustomerIdAndTransactionDateAfter(String customerId, LocalDate date);
 }

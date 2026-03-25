@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface RewardService {
     List<CustomerRewardSummary> calculateCustomerRewards();
+
+    CustomerRewardSummary getCustomerReward(String customerId);
 }

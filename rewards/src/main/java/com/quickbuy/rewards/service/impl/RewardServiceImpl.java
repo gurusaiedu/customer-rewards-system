@@ -1,5 +1,6 @@
 package com.quickbuy.rewards.service.impl;
 
+import com.quickbuy.rewards.exception.ResourceNotFoundException;
 import com.quickbuy.rewards.model.CustomerRewardSummary;
 import com.quickbuy.rewards.model.Transaction;
 import com.quickbuy.rewards.repository.TransactionRepository;
@@ -97,5 +98,31 @@ public class RewardServiceImpl implements RewardService {
             points += (amount - tier1Threshold) * tier1Points;
         }
         return points;
+    }
+
+    @Override
+    public CustomerRewardSummary getCustomerReward(String customerId) {
+
+        LocalDate threeMonthsAgo = LocalDate.now().minusMonths(numberOfMonths);
+
+        List<Transaction> transactions = transactionRepository
+                .findByCustomerIdAndTransactionDateAfter(customerId, threeMonthsAgo);
+
+        if (transactions.isEmpty()) {
+            throw new ResourceNotFoundException("No transactions found for customer: " + customerId);
+        }
+
+        Map<String, Integer> monthlyPoints = new HashMap<>();
+
+        for (Transaction t : transactions) {
+            String month = t.getTransactionDate().getYear() + "-" + t.getTransactionDate().getMonth();
+            int points = calculatePoints(t.getAmount());
+
+            monthlyPoints.merge(month, points, Integer::sum);
+        }
+
+        int totalPoints = monthlyPoints.values().stream().mapToInt(Integer::intValue).sum();
+
+        return new CustomerRewardSummary(customerId, monthlyPoints, totalPoints);
     }
 }

@@ -31,4 +31,13 @@ public class RewardController {
         }
         return ResponseEntity.ok(finalResponse);
     }
+
+    @GetMapping("/{customerId}")
+    public ResponseEntity<CustomerRewardSummary> getCustomerReward(@PathVariable String customerId) {
+        log.info("Fetching reward summary for customer: {}", customerId);
+        CustomerRewardSummary response = rewardService.getCustomerReward(customerId);
+        return ResponseEntity.ok(response);
+    }
+
+
 }
